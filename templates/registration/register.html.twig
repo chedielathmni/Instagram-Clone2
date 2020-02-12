@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+Register
+{% endblock %}
+
+{% block body %}
+<div class="container w-50 mt-5">
+  <div class="row">
+    <div class="col-2"></div>
+    <div class="col-8">
+      <h1 class="text-center mb-5">
+        <strong>Instagram</strong>
+      </h1>
+      <h1 class="mb-4">
+        Register
+      </h1>
+      {{ form_start(registrationForm) }}
+      {{ form_row(registrationForm.User_name) }}
+      {{ form_row(registrationForm.email) }}
+      {{ form_row(registrationForm.Password) }}
+      {{ form_row(registrationForm.save) }}
+      {{ form_end(registrationForm) }}
+    </div>
+  </div>
+</div>
+{% endblock %}

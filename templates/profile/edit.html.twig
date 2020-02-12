@@ -1,0 +1,24 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+New Profile
+{% endblock %}
+
+{% block body %}
+<div class="container mt-4 mb-5">
+    <h1>Edit your Profile</h1>
+    {{form_start(form)}}
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <div>{{form_row(form.username)}}</div>
+            <div>{{form_row(form.profile.name)}}</div>
+            <div>{{form_row(form.profile.bio)}}</div>
+            <div>{{form_row(form.profile.website)}}</div>
+            <div>{{form_row(form.profile.imageFile)}}</div>
+            <button class="btn btn-primary">Edit</button>
+        </div>
+        <div class="col-md-2"></div>
+        {{form_end(form)}}
+    </div>
+    {% endblock %}

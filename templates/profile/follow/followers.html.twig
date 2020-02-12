@@ -1,0 +1,27 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+{{user.username}} followers
+{% endblock %}
+
+
+{% block body %}
+<div class="container mt-5" style="position: relative; top:50px;">
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <h1>{{user.username}} followers</h1>
+            <div class="border border-dark p-2 mt-5">
+                {% for follower in followers %}
+                <a class="link" href="{{path('profile.show', 
+                {user: follower, id: follower.id, slug: follower.getSlug()})}}">
+                    <img width="30px" height="30px" class="rounded"
+                        src="{{vich_uploader_asset(follower.profile, 'imageFile')}}" alt="">
+                    <img> - {{follower.username}}</a>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+</div>
+{% endblock %}

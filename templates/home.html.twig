@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+Home
+{% endblock %}
+
+{% block body %}
+<div class="container mt-5 p-2">
+    <div class="row text-center">
+        <div class="col">
+            {% for post in posts %}
+            <h3>{{post.getUpdatedAt() | date('d/m/y')}}</h3>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

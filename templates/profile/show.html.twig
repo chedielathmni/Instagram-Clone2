@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+{{user.username}} (@{{user.username}})
+{% endblock %}
+
+
+{% block body %}
+<div class="container" style="width: 60%">
+  <div class="row">
+    <div class="col-md-4">
+      <img src="{{vich_uploader_asset(user.profile, 'imageFile')}}" class="rounded-circle mt-4" style="width: 100%;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      width: 50%;" />
+    </div>
+    <div class="col-md-8 pt-2 pl-2">
+      <div>
+        <h1>
+          {{user.profile.name}}
+          {% if app.user != user %}
+          {% if followed == false %}
+          <a href="{{path('follow', 
+          {id: user.id, slug: user.getSlug(), user: user})}}">
+            <button class="btn btn-primary">follow</button></a>
+          {% else %}
+          <a href="{{path('unfollow', 
+          {id: user.id, slug: user.getSlug(), user: user})}}">
+            <button class="btn btn-primary">unfollow</button></a>
+          {% endif %}
+          {% endif %}
+        </h1>
+      </div>
+      <div class="d-flex">
+        <div>
+          <strong>{{posts | length}}</strong> posts
+        </div>
+        <div class="pl-5 pr-5">
+          <a class="link" href="{{path('show.followers',
+            {id: user.id, user: user, slug: user.getSlug()})}}">
+            <strong>{{user.followers | length}}</strong> followers</a>
+        </div>
+        <div>
+          <a class="link" href="{{path('show.followed',
+            {id: user.id, user: user, slug: user.getSlug()})}}">
+            <strong>{{user.following | length}}</strong> following</a>
+        </div>
+      </div>
+      <div class="pt-3">
+        <strong>{{user.profile.bio}}</strong>
+      </div>
+      <div>
+        <a href="{{user.profile.website}}" target="_blank">
+          <strong>{{user.profile.website}}</strong>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="container" style="width: 80%;">
+
+  <div class="row pt-5">
+    {% for p in posts %}
+    <div class="col-4 image-container mb-4 align-items-center justify-content-center">
+      <a href="{{path('post.show', {postId: loop.index, id: user.id, slug: user.getSlug()})}}">
+        <img src="{{vich_uploader_asset(p, 'imageFile')}}" class="w-100" />
+      </a>
+    </div>
+    {% endfor %}
+
+  </div>
+</div>
+{% endblock %}
