@@ -13,7 +13,8 @@ class PostType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('imageFile', VichImageType::class);
+            ->add('imageFile', VichImageType::class)
+            ->add('caption');
     }
 
     public function configureOptions(OptionsResolver $resolver)

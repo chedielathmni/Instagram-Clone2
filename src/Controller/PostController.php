@@ -72,10 +72,12 @@ class PostController extends AbstractController
     {
         $posts = $user->getPosts()->getValues();
         dump($posts);
+        $followed = $user->isFollowed($this->getUser());
         if (isset($posts[$postId - 1]))
             return $this->render('post/show.html.twig', [
                 'user' => $user,
-                'post' => $posts[$postId - 1]
+                'post' => $posts[$postId - 1],
+                'followed' => $followed
             ]);
         else return new Response('not found');/* $this->redirectToRoute('home'); */
     }

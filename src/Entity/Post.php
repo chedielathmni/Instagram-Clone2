@@ -49,6 +49,11 @@ class Post
      */
     private $owner;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $caption;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -114,6 +119,18 @@ class Post
     public function setOwner(?User $owner): self
     {
         $this->owner = $owner;
+
+        return $this;
+    }
+
+    public function getCaption(): ?string
+    {
+        return $this->caption;
+    }
+
+    public function setCaption(string $caption): self
+    {
+        $this->caption = $caption;
 
         return $this;
     }
