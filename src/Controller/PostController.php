@@ -64,21 +64,55 @@ class PostController extends AbstractController
 
 
     /**
-     * @Route("/{slug}-{id}/{postId}", name="post.show", requirements={"slug": "[a-z0-9\-]*", "postId": "[0-9]*"})
+     * @Route("/{slug}-{id}/{index}", name="post.show", requirements={"slug": "[a-z0-9\-]*", "index": "[0-9]*"})
      * @param User $user
      * @return Response
      */
-    public function show(User $user, int $postId): Response
+    public function show(User $user, int $index): Response
     {
         $posts = $user->getPosts()->getValues();
-        dump($posts);
         $followed = $user->isFollowed($this->getUser());
-        if (isset($posts[$postId - 1]))
+        $post = $posts[$index - 1];
+        $liked = $post->didLike($this->getUser());
+        if (isset($post))
             return $this->render('post/show.html.twig', [
                 'user' => $user,
-                'post' => $posts[$postId - 1],
-                'followed' => $followed
+                'post' => $post,
+                'followed' => $followed,
+                'index' => $index,
+                'liked' => $liked
             ]);
         else return new Response('not found');/* $this->redirectToRoute('home'); */
+    }
+
+    /**
+     * @Route("/{slug}-{id}/{index}/like", name="post.like", requirements={"slug": "[a-z0-9\-]*"})
+     * @param User $user
+     * @return Response
+     */
+    public function like(User $user, int $index): Response
+    {
+        $currentUser = $this->getUser();
+        $posts = $user->getPosts()->getValues();
+        $post = $posts[$index - 1];
+        if (!$post->didLike($currentUser)) {
+            $post->addLike($currentUser);
+            $currentUser->addPostsLiked($post);
+        } else {
+            $post->removeLike($currentUser);
+            $currentUser->removePostsLiked($post);
+        }
+        $this->em->flush();
+        $user = $post->getOwner();
+
+        dump($post);
+        dump($currentUser);
+
+        return $this->redirectToRoute('post.show', [
+            'user' => $user,
+            'index' => $index,
+            'slug' => $user->getSlug(),
+            'id' => $user->getId()
+        ]);
     }
 }

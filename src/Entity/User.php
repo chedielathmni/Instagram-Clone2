@@ -74,8 +74,9 @@ class User implements UserInterface, \Serializable
     private $following;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="followers")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Post", mappedBy="likes")
      */
+    private $postsLiked;
 
 
     public function __construct()
@@ -83,6 +84,7 @@ class User implements UserInterface, \Serializable
         $this->posts = new ArrayCollection();
         $this->followers = new ArrayCollection();
         $this->following = new ArrayCollection();
+        $this->postsLiked = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -328,6 +330,34 @@ class User implements UserInterface, \Serializable
             if ($following->getFollowed() === $this) {
                 $following->setFollowed(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Post[]
+     */
+    public function getPostsLiked(): Collection
+    {
+        return $this->postsLiked;
+    }
+
+    public function addPostsLiked(Post $postsLiked): self
+    {
+        if (!$this->postsLiked->contains($postsLiked)) {
+            $this->postsLiked[] = $postsLiked;
+            $postsLiked->addLike($this);
+        }
+
+        return $this;
+    }
+
+    public function removePostsLiked(Post $postsLiked): self
+    {
+        if ($this->postsLiked->contains($postsLiked)) {
+            $this->postsLiked->removeElement($postsLiked);
+            $postsLiked->removeLike($this);
         }
 
         return $this;

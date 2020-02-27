@@ -81,8 +81,22 @@
         <ul class="navbar-nav ml-auto">
           <!-- Authentication Links -->
           {% if app.user %}
+          <div class="col-md-2 ml-3"><a class="btn btn-light"
+              style="background-color: transparent; border-color: trasparent;"
+              href=" {{ path('post.new', {id: app.user.id, slug: app.user.getSlug()})}} "><i
+                class=" fas fa-plus-square fa-2x spin pr-2"></i></a></div>
+          {% if Current_menu is defined and Current_menu == 'profile' and user == app.user %}
+          <div class="col-md-2"><a class="btn btn-light" style="background-color: transparent;"
+              href="{{ path('profile.edit', {id: app.user.id, slug: app.user.getSlug()})}} "><i
+                class="fas fa-cog fa-2x spin"></i></a></div>
+          {% else %}
+          <div class="col-md-2"><a class="btn btn-light" style="background-color: transparent;"
+              href="{{ path('profile.show', {id: app.user.id, slug: app.user.getSlug()})}} "><i
+                class="fas fa-user fa-2x"></i></a>
+          </div>
+          {% endif %}
           <div class="mb-3">
-            <a class="link navbar-brand" href="{{ path('app_logout') }}">Logout</a>
+            <a class="link navbar-brand ml-5" href="{{ path('app_logout') }}">Logout</a>
           </div>
           {% else %}
           <li class="nav-item">
@@ -106,28 +120,11 @@
   {% if app.user %}
   <footer class="footer">
     <div class="container">
-      <nav class="navbar fixed-bottom navbar-light d-flex justify-content-center">
-        <div class="col-md-2 ml-5"><a class="btn btn-light" style="background-color: transparent;"
-            href="{{path('home')}}"><i class="fas fa-home fa-2x link"></i></a></div>
-        <div class="col-md-2 ml-3"><i class="fas fa-search fa-2x"></i></div>
-        <div class="col-md-2 ml-3"><a class="btn btn-light"
-            style="background-color: transparent; border-color: trasparent;"
-            href=" {{ path('post.new', {id: app.user.id, slug: app.user.getSlug()})}} "><i
-              class=" fas fa-plus-square fa-2x spin"></i></a></div>
-        <div class="col-md-2 ml-3"><i class="fas fa-heart fa-2x"></i></div>
-        {% if Current_menu is defined and Current_menu == 'profile' and user == app.user %}
-        <div class="col-md-2"><a class="btn btn-light" style="background-color: transparent;"
-            href="{{ path('profile.edit', {id: app.user.id, slug: app.user.getSlug()})}} "><i
-              class="fas fa-cog fa-2x spin"></i></a></div>
-        {% else %}
-        <div class="col-md-2"><a class="btn btn-light" style="background-color: transparent;"
-            href="{{ path('profile.show', {id: app.user.id, slug: app.user.getSlug()})}} "><i
-              class="fas fa-user fa-2x"></i></a>
-        </div>
+      <nav class="navbar fixed-bottom navbar-light d-flex justify-content-end">
+
       </nav>
     </div>
   </footer>
-  {% endif %}
   {% endif %}
 
   </nav>

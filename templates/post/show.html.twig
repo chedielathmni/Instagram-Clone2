@@ -15,24 +15,55 @@ Post show
             <img class="w-100 h-100" src="{{vich_uploader_asset(post, 'imageFile')}}" alt="">
         </div>
         <div class="col-4 p-0 m-0">
-            <div class="pl-1 pt-3 pb-2 d-flex" style="position: relative; right:15px; border-bottom: 1px solid #AAA">
-                <a class="link ml-1" href="{{ path('profile.show', {id: user.id, slug: user.getSlug()})}} ">
-                    <h4>{{user.username}}</h4>
-                </a>
-                {% if app.user != user %}
-                {% if followed == false %}
-                <a class="link" href="{{path('follow', 
+            <div class="pl-1 pt-3 pb-2" style="position: relative; right:15px; border-bottom: 1px solid #AAA">
+                <div class="d-flex"><a class="link ml-1"
+                        href="{{ path('profile.show', {id: user.id, slug: user.getSlug()})}} ">
+                        <h4>{{user.username}}</h4>
+                    </a>
+                    {% if app.user != user %}
+                    {% if followed == false %}
+                    <a class="link" href="{{path('follow', 
                 {id: user.id, slug: user.getSlug(), user: user})}}">
-                    <h4> . follow</h4>
-                </a>
-                {% else %}
-                <a class="link ml-1" href="{{path('unfollow', 
+                        <h4> . follow</h4>
+                    </a>
+                    {% else %}
+                    <a class="link ml-1" href="{{path('unfollow', 
                 {id: user.id, slug: user.getSlug(), user: user})}}">
-                    <h4>. unfollow</h4>
-                </a>
-                {% endif %}
-                {% endif %}
-                <p>{{post.caption}}</p>
+                        <h4>. unfollow</h4>
+                    </a>
+                    {% endif %}
+                    {% endif %}</div>
+                <div class="ml-1">
+                    <p>{{post.caption}}</p>
+                </div>
+            </div>
+            <div class="m-0 p-0 mt-3 ">
+                <div class="position-absolute mb-3 d-flex" style="bottom: 80px;">
+                    <a class="link"
+                        href="{{path('post.like', {post: post, index: index, slug: user.getSlug(), id: user.id})}}">
+                        {% if liked is defined and liked == true %}
+                        <i class="fas fa-heart fa-2x" style="color:red"></i>
+                        {% else %}
+                        <i class="fas fa-heart fa-2x" style="color:black"></i>
+                        {% endif %}
+                    </a>
+                    <h4 class="ml-2">{{post.likes | length }}</h4>
+                    <h4 class="ml-2">
+                        {% if post.likes| length > 1 %}
+                        Likes
+                        {% else %}
+                        Like
+                        {% endif %}
+                    </h4>
+                </div>
+                <div class="position-absolute w-100" style="bottom: 20px; right:15px; border-top: 1px solid #AAA">
+                    <form class="form-inline mt-4">
+                        <div class="form-group mx-sm-3 mb-2">
+                            <input type="text" class="form-control" id="comment" placeholder="Comment">
+                        </div>
+                        <button type="submit" class="btn btn-primary mb-2">Post</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

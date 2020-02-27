@@ -2,7 +2,10 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
@@ -53,6 +56,16 @@ class Post
      * @ORM\Column(type="string", length=255)
      */
     private $caption;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="postsLiked")
+     */
+    private $likes;
+
+    public function __construct()
+    {
+        $this->likes = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -133,5 +146,36 @@ class Post
         $this->caption = $caption;
 
         return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getLikes(): Collection
+    {
+        return $this->likes;
+    }
+
+    public function addLike(User $like): self
+    {
+        if (!$this->likes->contains($like)) {
+            $this->likes[] = $like;
+        }
+
+        return $this;
+    }
+
+    public function removeLike(User $like): self
+    {
+        if ($this->likes->contains($like)) {
+            $this->likes->removeElement($like);
+        }
+
+        return $this;
+    }
+
+    public function didLike(User $user): bool
+    {
+        return $this->likes->contains($user);
     }
 }

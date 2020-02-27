@@ -5,13 +5,51 @@ Home
 {% endblock %}
 
 {% block body %}
+{% for post in posts %}
 <div class="container mt-5 p-2">
-    <div class="row text-center">
-        <div class="col">
-            {% for post in posts %}
-            <h3>{{post.getUpdatedAt() | date('d/m/y')}}</h3>
-            {% endfor %}
+    <div class="row">
+        <div class="col-8">
+            <img class="w-100 h-100" src="{{vich_uploader_asset(post, 'imageFile')}}" alt="">
         </div>
-    </div>
-</div>
-{% endblock %}
+        <div class="col-4 p-0 m-0">
+            <div class="pl-1 pt-3 pb-2" style="position: relative; right:15px; border-bottom: 1px solid #AAA">
+                <div class="d-flex"><a class="link ml-1"
+                        href="{{ path('profile.show', {id: post.getOwner.getId(), slug: post.getOwner().getSlug()})}} ">
+                        <h4>{{post.getOwner().getUsername()}}</h4>
+                    </a>
+                </div>
+                <div class="ml-1">
+                    <p>{{post.caption}}</p>
+                </div>
+            </div>
+            <div class="m-0 p-0 mt-3 ">
+                <div class="position-absolute mb-3 d-flex" style="bottom: 80px;">
+                    <a class="link"
+                        href="{{path('post.like', {post: post, index: loop.index, user: post.getOwner(), slug: post.getOwner().getSlug(), id: post.getOwner().getId()})}}">
+                        {% if post.didLike(app.user) %}
+                        <i class="fas fa-heart fa-2x" style="color:red"></i>
+                        {% else %}
+                        <i class="fas fa-heart fa-2x" style="color:black"></i>
+                        {% endif %}
+                    </a>
+                    <h4 class="ml-2">{{post.likes | length }}</h4>
+                    <h4 class="ml-2">
+                        {% if post.likes| length > 1 %}
+                        Likes
+                        {% else %}
+                        Like
+                        {% endif %}
+                    </h4>
+                </div>
+                <div class="position-absolute w-100" style="bottom: 20px; right:15px; border-top: 1px solid #AAA">
+                    <form class="form-inline mt-4">
+                        <div class="form-group mx-sm-3 mb-2">
+                            <input type="text" class="form-control" id="comment" placeholder="Comment">
+                        </div>
+                        <button type="submit" class="btn btn-primary mb-2">Post</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% endblock %}

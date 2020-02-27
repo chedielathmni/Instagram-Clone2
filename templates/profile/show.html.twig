@@ -65,7 +65,7 @@
   <div class="row pt-5">
     {% for p in posts %}
     <div class="col-4 image-container mb-4 align-items-center justify-content-center">
-      <a href="{{path('post.show', {postId: loop.index, id: user.id, slug: user.getSlug()})}}">
+      <a href="{{path('post.show', {post: p, index: loop.index, id: user.id, slug: user.getSlug()})}}">
         <img src="{{vich_uploader_asset(p, 'imageFile')}}" class="w-100" />
       </a>
     </div>
